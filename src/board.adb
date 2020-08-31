@@ -63,7 +63,7 @@ package body Board is
    function MoveBall return Boolean is
    begin
       if Ball.X = (X_Coord'First) or (Ball.X = X_Coord'Last) then
-         if Ball.Y /= Paddle1 and Ball.Y /= Paddle2 then
+         if (Ball.Y /= Paddle1 and Ball.X = X_Coord'First) or (Ball.Y /= Paddle2 and Ball.X = X_Coord'Last) then
             return true;
          end if;
          Ball.X_Dir := X_Dir_Type'Val((X_Dir_Type'Pos(Ball.X_Dir) + 1) mod 2);
