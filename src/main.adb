@@ -13,9 +13,6 @@ procedure Main is
    PaddleCycle : MicroBit.Time.Time_Ms := 100;
    GameOver : Boolean := false;
 begin
-   --
-
-
    loop
       if MicroBit.Buttons.State (Button_A) = Pressed then
          Board.MovePaddle(0);
@@ -28,19 +25,17 @@ begin
          GameOver := Board.MoveBall;
          LastBallMove := MicroBit.Time.Clock;
       end if;
+
       exit when GameOver;
 
       Board.DisplayBoard;
-
       MicroBit.Time.Delay_Ms(100);
-
    end loop;
 
    MicroBit.Display.Clear;
    loop
       MicroBit.Display.Display("Game Over!");
    end loop;
-
 end Main;
 
 

@@ -6,7 +6,7 @@ package body Board is
    
    subtype Paddle_Type is Natural range 0 .. GridSizeY;
    
-   Paddle1 : Paddle_Type := 1;
+   Paddle1 : Paddle_Type := 0;
    Paddle2 : Paddle_type := 0;
    
    subtype X_Coord is Natural range 0 .. GridSizeX;
@@ -18,15 +18,16 @@ package body Board is
       record
          X : X_Coord := 1;
          Y : Y_Coord := 2;
-         X_Dir : X_Dir_Type := X_Dir_Type'val(0);
-         Y_Dir : Y_Dir_Type := Y_Dir_Type'Val(0);
+         X_Dir : X_Dir_Type := left;
+         Y_Dir : Y_Dir_Type := up;
       end record;
    
    Ball : Ball_Type;
+   
+   --All this random stuff is a horrible solution, but i could not get the Ada libraries to work with the microbit.
    RandomIndex : Integer := 0;
    RandomNum : Integer := 0;
    type Arr_Type is array (0 .. 99) of Natural;
-
    procedure GenerateRandom is
       MyRands : constant Arr_Type := (1,	2,	1,	2,	1,
                                       0,	2,	1,	1,	0,
@@ -48,16 +49,12 @@ package body Board is
                                       0,	1,	0,	2,	0,
                                       1,	0,	1,	0,	1,
                                       1,	1,	1,	1,	0);
-
-      
    begin
-      
       RandomIndex := RandomIndex + 1;
       if RandomIndex >= 99 then
          RandomIndex := 0;
       end if;
       RandomNum := MyRands(RandomIndex);
-      
    end GenerateRandom;
    
    function MoveBall return Boolean is
@@ -71,30 +68,29 @@ package body Board is
          Ball.Y_Dir := Y_Dir_Type'Val(RandomNum);
       end if;           
       
-   if Ball.Y = Y_Coord'First then
-      Ball.Y_Dir := down;
-   elsif Ball.Y = Y_Coord'Last then
-      Ball.Y_Dir := up;
-   end if;
+      if Ball.Y = Y_Coord'First then
+         Ball.Y_Dir := down;
+      elsif Ball.Y = Y_Coord'Last then
+         Ball.Y_Dir := up;
+      end if;
             
-   if Ball.X_Dir = X_Dir_Type'First then
-      Ball.X := Ball.X - 1;
+      if Ball.X_Dir = X_Dir_Type'First then
+         Ball.X := Ball.X - 1;
       else
          Ball.X := Ball.X + 1;
-   end if;
-   if Ball.Y_Dir = Y_Dir_Type'First then
-      Ball.Y := Ball.Y - 1;
-   elsif Ball.Y_Dir = Y_Dir_Type'Last then
+      end if;
+      
+      if Ball.Y_Dir = Y_Dir_Type'First then
+         Ball.Y := Ball.Y - 1;
+      elsif Ball.Y_Dir = Y_Dir_Type'Last then
          null;
       else
-         Ball.Y := Ball.Y + 1;
-         
-   end if;
-   return false;
-end MoveBall;
+         Ball.Y := Ball.Y + 1;    
+      end if;
+      
+      return false;
+   end MoveBall;
    
-        
-
    procedure DisplayBoard is
    begin
       MicroBit.Display.Clear;
@@ -113,8 +109,5 @@ end MoveBall;
    end MovePaddle;
 
 begin
-   --PaddleArr(0) := Paddle1;
    null; 
-      
-
 end Board;
