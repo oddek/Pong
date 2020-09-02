@@ -6,7 +6,7 @@ package body Board is
    
    subtype Paddle_Type is Natural range 0 .. GridSizeY;
    
-   Paddle1 : Paddle_Type := 0;
+   Paddle1 : Paddle_Type := 1;
    Paddle2 : Paddle_type := 0;
    
    subtype X_Coord is Natural range 0 .. GridSizeX;
